@@ -1,7 +1,7 @@
 ![Gluten Status](https://img.shields.io/badge/Gluten-Free-green.svg)
 ![Eco Status](https://img.shields.io/badge/ECO-Friendly-green.svg)
 
-# Shop
+# Shop (OOP)
 
 OOP student project
 
@@ -15,9 +15,21 @@ Site published at: https://pizzaandpast4.github.io/oop-project-shop/
 
 ## 🎯 Project features/goals
 
+-   SPA (single page application)
 -   Github pages
--   OOP
--   **NO** design
+-   forms
+-   JS rendering (DOM)
+-   JS events
+-   localStorage
+-   class (OOP)
+
+## ✅ Tasks
+
+-   [] layout render
+    -   [] header
+    -   [] main content
+    -   [] footer
+-   [] navigation between pages
 
 ## 🧰 Getting Started
 
