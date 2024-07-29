@@ -1,3 +1,8 @@
+import { PageContact } from "./PageContact.js";
+import { PageHome } from "./PageHome.js";
+import { PageServices } from "./PageServices.js";
+import { PageTeam } from "./PageTeam.js";
+
 export class Layout {
     constructor() {
         this.render();
@@ -5,15 +10,15 @@ export class Layout {
 
     header() {
         const HTML = `
-            <header class="container">
+            <header class="container main-header">
                 <div class="row">
-                    <div class="col-12">
-                        <img src="#" alt="Logo">
-                        <nav class="hidden visible-sm-flex hidden-md visible-lg-grid hidden-xl visible-xxl-inline-block">
-                            <a href="./">Home</a>
-                            <a href="./services">Services</a>
-                            <a href="./team">Team</a>
-                            <a href="./contact-us">Contact us</a>
+                    <div class="col-12 main-header-content">
+                        <img class="logo" src="./img/logo.png" alt="Logo">
+                        <nav class="hidden visible-sm-flex main-nav">
+                            <button class="link">Home</button>
+                            <button class="link">Services</button>
+                            <button class="link">Team</button>
+                            <button class="link">Contact us</button>
                         </nav>
                     </div>
                 </div>
@@ -21,25 +26,34 @@ export class Layout {
         return HTML;
     }
 
+    headerEvents() {
+        const buttonsDOM = document.querySelectorAll('.main-header-content button');
+
+        for (const buttonDOM of buttonsDOM) {
+            buttonDOM.addEventListener('click', () => {
+                if (buttonDOM.textContent === 'Home') {
+                    console.log((new PageHome()).render());
+                }
+                if (buttonDOM.textContent === 'Services') {
+                    console.log((new PageServices()).render());
+                }
+                if (buttonDOM.textContent === 'Team') {
+                    console.log((new PageTeam()).render());
+                }
+                if (buttonDOM.textContent === 'Contact us') {
+                    console.log((new PageContact()).render());
+                }
+            });
+        }
+    }
+
     main() {
+        const pageObject = new PageContact();
         const HTML = `
             <main class="container">
-                <section class="row">
-                    <h1 class="col-12 main-title">Pirmas posukis</h1>
-                </section>
-                <section class="row">
-                    <div class="col-10 col-sm-8 col-md-6 col-lg-4 col-xl-2 col-xxl-1" style="background: yellow;">A</div>
-                    <div class="col-1 m-1 m-sm-3 col-md-2 m-md-4 col-lg-4 m-xl-6 col-xxl-1 m-xxl-10" style="background: orange;">B</div>
-                </section>
-                <section class="row">
-                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-12">Pirmas posukis</div>
-                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">Pirmas posukis</div>
-                    <div class="col-6 col-lg-4 col-xl-3">Pirmas posukis</div>
-                    <div class="col-6 col-lg-4 col-xl-3">Pirmas posukis</div>
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-1">Pirmas posukis</div>
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2">Pirmas posukis</div>
-                </section>
+                ${pageObject.render()}
             </main>`;
+
         return HTML;
     }
 
@@ -53,5 +67,7 @@ export class Layout {
         const HTML = this.header() + this.main() + this.footer();
 
         DOM.insertAdjacentHTML('beforeend', HTML);
+
+        this.headerEvents();
     }
 }
