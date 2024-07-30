@@ -1,8 +1,12 @@
 export class PageServices {
-    constructor() { }
+    constructor(DOM) {
+        this.DOM = DOM;
+
+        this.render();
+    }
 
     render() {
-        return `
+        this.DOM.innerHTML = `
             <section class="row">
                 <div class="col-12">
                     <h1>Services page</h1>
