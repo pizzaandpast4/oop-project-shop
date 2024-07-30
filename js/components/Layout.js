@@ -1,6 +1,8 @@
 import { PageContact } from "./PageContact.js";
 import { PageHome } from "./PageHome.js";
 import { PageServices } from "./PageServices.js";
+import { PageShopAddNew } from "./PageShopAddNew.js";
+import { PageShopList } from "./PageShopList.js";
 import { PageTeam } from "./PageTeam.js";
 
 export class Layout {
@@ -13,23 +15,36 @@ export class Layout {
                 title: 'Home',
             },
             {
-                text: 'Team',
-                content: PageTeam,
-                background: 'grey',
-                title: 'Our team'
-            },
-            {
-                text: 'Services',
-                content: PageServices,
+                text: 'Shop',
+                content: PageShopList,
                 background: 'white',
-                title: 'Our services'
+                title: 'Your shopping list',
             },
             {
-                text: 'Contact us',
-                content: PageContact,
-                background: 'aquamarine',
-                title: 'Contact us',
+                text: 'Add',
+                extraMenuStyle: 'menu-btn',
+                content: PageShopAddNew,
+                background: 'white',
+                title: 'Add new item to your shopping list',
             },
+            // {
+            //     text: 'Team',
+            //     content: PageTeam,
+            //     background: 'grey',
+            //     title: 'Our team'
+            // },
+            // {
+            //     text: 'Services',
+            //     content: PageServices,
+            //     background: 'white',
+            //     title: 'Our services'
+            // },
+            // {
+            //     text: 'Contact us',
+            //     content: PageContact,
+            //     background: 'aquamarine',
+            //     title: 'Contact us',
+            // },
         ];
         this.DOM = document.getElementById('app');
         this.mainDOM = null;
@@ -37,14 +52,15 @@ export class Layout {
         this.render();
         this.headerEvents();
 
-        new this.pagesData[0].content(this.mainDOM);
+        new this.pagesData[2].content(this.mainDOM);
     }
 
     header() {
         let navHTML = '';
 
         for (const link of this.pagesData) {
-            navHTML += `<button class="link">${link.text}</button>`;
+            const style = link.extraMenuStyle ? link.extraMenuStyle : '';
+            navHTML += `<button class="link ${style}">${link.text}</button>`;
         }
 
         return `
@@ -52,7 +68,7 @@ export class Layout {
                 <div class="row">
                     <div class="col-12 main-header-content">
                         <img class="logo" src="./img/logo.png" alt="Logo">
-                        <nav class="hidden visible-sm-flex main-nav">
+                        <nav class="main-nav">
                             ${navHTML}
                         </nav>
                     </div>

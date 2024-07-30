@@ -31,6 +31,11 @@ Site published at: https://pizzaandpast4.github.io/oop-project-shop/
     -   [x] main content
     -   [x] footer
 -   [x] navigation between pages
+-   [ ] product CRUD:
+    -   [ ] list
+    -   [ ] add
+    -   [ ] remove
+    -   [ ] update
 
 ## 🧰 Getting Started
 
