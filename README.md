@@ -26,11 +26,11 @@ Site published at: https://pizzaandpast4.github.io/oop-project-shop/
 ## ✅ Tasks
 
 -   [x] demo completed tasks
--   [] layout render
-    -   [] header
-    -   [] main content
-    -   [] footer
--   [] navigation between pages
+-   [x] layout render
+    -   [x] header
+    -   [x] main content
+    -   [x] footer
+-   [x] navigation between pages
 
 ## 🧰 Getting Started
 
