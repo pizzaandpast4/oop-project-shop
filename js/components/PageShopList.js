@@ -3,24 +3,40 @@ export class PageShopList {
         this.DOM = DOM;
 
         this.render();
+        this.listEvents();
+    }
+
+    listEvents() {
+        const rowsDOM = this.DOM.querySelectorAll('tbody > tr');
+
+        for (const rowDOM of rowsDOM) {
+            const buttonsDOM = rowDOM.querySelectorAll('button');
+
+            buttonsDOM[2].addEventListener('click', () => {
+                console.log('deleting...');
+            });
+        }
     }
 
     render() {
-        const data = [
-            { title: 'Pomidoras', amount: 2 },
-            { title: 'Agurkas', amount: 1 },
-            { title: 'Grietinė', amount: 1 },
-            { title: 'Druska', amount: 1 },
-        ];
+        const data = JSON.parse(localStorage.getItem('itemList'));
         let HTML = '';
 
-        for (const item of data) {
-            HTML += `
-                <tr>
-                    <td>${item.title}</td>
-                    <td>${item.amount}</td>
-                    <td>Actions</td>
-                </tr>`;
+        if (data) {
+            for (const item of data) {
+                HTML += `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>
+                            <button>-</button>
+                            ${item.amount}
+                            <button>+</button>
+                        </td>
+                        <td>
+                            <button>Delete</button>
+                        </td>
+                    </tr>`;
+            }
         }
 
         this.DOM.innerHTML = `

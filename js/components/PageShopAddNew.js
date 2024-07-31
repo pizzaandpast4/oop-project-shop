@@ -10,11 +10,21 @@ export class PageShopAddNew {
     formEvents() {
         this.formDOM = this.DOM.querySelector('form');
         const titleDOM = document.getElementById('shop_add_title');
+        const itemList = [];
+        const localStorageData = localStorage.getItem('itemList');
+
+        if (localStorageData) {
+            const parsedLocalStorageData = JSON.parse(localStorageData);
+            itemList.push(...parsedLocalStorageData);
+        }
 
         this.formDOM.addEventListener('submit', e => {
             e.preventDefault();
-
-            console.log(titleDOM.value);
+            itemList.push({
+                title: titleDOM.value,
+                amount: 1,
+            });
+            localStorage.setItem('itemList', JSON.stringify(itemList));
         });
     }
 
