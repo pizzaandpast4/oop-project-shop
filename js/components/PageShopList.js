@@ -1,17 +1,62 @@
 export class PageShopList {
     constructor(DOM) {
         this.DOM = DOM;
+        this.localStorageKey = 'itemList';
 
         this.render();
         this.listEvents();
+    }
+
+    readLocalStorage() {
+        const localStorageData = localStorage.getItem(this.localStorageKey);
+
+        // beda, nes net nera tokio "key" local storidze
+        if (localStorageData === null) {
+            return [];
+        }
+
+        // kazkoks stringas buvo rastas ir bandom ji atstatyti i normalu JS "objekta"
+        // minimali galima teisinga stringo versija yra: []
+        if (typeof localStorageData !== 'string' || localStorageData.length < 2) {
+            return [];
+        }
+
+        const data = JSON.parse(localStorageData);
+
+        if (!Array.isArray(data)) {
+            return [];
+        }
+
+        const validData = [];
+
+        for (const item of data) {
+            if (typeof item === 'object'
+                && item !== null
+                && !Array.isArray(item)
+                && Object.keys(item).length === 3
+                && typeof item.id === 'string'
+                && item.id.length > 5
+                && item.id.startsWith('item_')
+                && isFinite(parseInt(item.id.slice(5)))
+                && typeof item.title === 'string'
+                && item.title.trim().length > 0
+                && typeof item.amount === 'number'
+                && isFinite(item.amount)
+                && item.amount >= 0
+            ) {
+                validData.push(item);
+            }
+        }
+
+        return validData;
     }
 
     minus(rowDOM, buttonDOM) {
         const amountChange = +buttonDOM.dataset.step;
         const idToDecrease = rowDOM.id;
         const amountDOM = rowDOM.querySelector('span');
-        const localStorageData = localStorage.getItem('itemList');
-        const list = JSON.parse(localStorageData)
+
+        const list = this.readLocalStorage()
             .map(item => item.id === idToDecrease
                 ? {
                     ...item,
@@ -19,7 +64,7 @@ export class PageShopList {
                 }
                 : item);
 
-        localStorage.setItem('itemList', JSON.stringify(list));
+        localStorage.setItem(this.localStorageKey, JSON.stringify(list));
         amountDOM.textContent = list.filter(item => item.id === idToDecrease)[0].amount;
     }
 
@@ -27,8 +72,7 @@ export class PageShopList {
         const amountChange = +buttonDOM.dataset.step;
         const idToIncrement = rowDOM.id;
         const amountDOM = rowDOM.querySelector('span');
-        const localStorageData = localStorage.getItem('itemList');
-        const list = JSON.parse(localStorageData)
+        const list = this.readLocalStorage()
             .map(item => item.id === idToIncrement
                 ? {
                     ...item,
@@ -36,24 +80,23 @@ export class PageShopList {
                 }
                 : item);
 
-        localStorage.setItem('itemList', JSON.stringify(list));
+        localStorage.setItem(this.localStorageKey, JSON.stringify(list));
         amountDOM.textContent = list.filter(item => item.id === idToIncrement)[0].amount;
     }
 
     delete(rowDOM, buttonDOM) {
         const idToRemove = rowDOM.id;
-        const localStorageData = localStorage.getItem('itemList');
-        const list = JSON.parse(localStorageData).filter(item => item.id !== idToRemove);
-        localStorage.setItem('itemList', JSON.stringify(list));
+        const list = this.readLocalStorage().filter(item => item.id !== idToRemove);
+        localStorage.setItem(this.localStorageKey, JSON.stringify(list));
         rowDOM.remove();
     }
 
     listEvents() {
         const rowsDOM = this.DOM.querySelectorAll('tbody > tr');
         const funcList = {
-            minus: this.minus,
-            plus: this.plus,
-            delete: this.delete,
+            minus: this.minus.bind(this),
+            plus: this.plus.bind(this),
+            delete: this.delete.bind(this),
         };
 
         for (const rowDOM of rowsDOM) {
@@ -66,7 +109,7 @@ export class PageShopList {
     }
 
     render() {
-        const data = JSON.parse(localStorage.getItem('itemList'));
+        const data = JSON.parse(localStorage.getItem(this.localStorageKey));
         let HTML = '';
 
         if (data) {
